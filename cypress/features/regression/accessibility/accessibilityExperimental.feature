@@ -14,7 +14,6 @@ Feature: Accessibility tests - Experimental folder
       | groupedcharacter    |
       | number-input        |
       | simple-color-picker |
-      | switch              |
       | textarea            |
 
   @accessibility
@@ -69,16 +68,6 @@ Feature: Accessibility tests - Experimental folder
       | group checkbox string validation   |
       | single checkbox boolean validation |
       | single checkbox string validation  |
-
-  @accessibility
-  Scenario Outline: Experimental switch component <story> story
-    When I open "Experimental switch" component page "<story>" in no iframe
-    Then "Experimental switch <story> story" component has no accessibility violations
-    Examples:
-      | story                                               |
-      | single switch boolean validation                    |
-      | single switch string validation                     |
-      | single switch string validation validation on label |
 
   @accessibility
   Scenario: Experimental checkbox with asterisk

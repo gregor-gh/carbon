@@ -117,6 +117,7 @@ Feature: Accessibility tests - Design System folder
       | Search            |
       | Select            |
       | Select Filterable |
+      | Switch            |
       | Tabs              |
       | Textbox           |
       | Text Editor       |
@@ -250,3 +251,13 @@ Feature: Accessibility tests - Design System folder
   Scenario: Image component default story
     When I open "Design System Image" component page "default story" in no iframe
     Then "Image default story" component has no accessibility violations
+
+  @accessibility
+  Scenario Outline: Design System switch component <story> story
+    When I open "Design System switch" component page "<story>" in no iframe
+    Then "Design System switch <story> story" component has no accessibility violations
+    Examples:
+      | story                                               |
+      | single switch boolean validation                    |
+      | single switch string validation                     |
+      | single switch string validation validation on label |

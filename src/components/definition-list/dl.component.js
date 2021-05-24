@@ -3,68 +3,66 @@ import propTypes from "@styled-system/prop-types";
 import PropTypes from "prop-types";
 import { StyledDl, StyledDtDiv, StyledDdDiv } from "./definition-list.style";
 import Dt from "./dt.component";
-import Dd from "./dd.component";
 
 const Dl = ({
   children,
   w = 50,
   dtTextAlign = "right",
   ddTextAlign = "left",
-  ...props
+  ...rest
 }) => {
-  const dlComponent = [];
   const listChildren = React.Children.toArray(children);
-  let key = "";
 
-  const composeDlComponent = (array) => {
-    let dtLabel;
-    let ddContent = [];
-    let isLastChild;
-    let nextItemIsNotDd;
+  const wrapChild = (child, key) => {
+    let wrappedChild;
 
-    array.forEach((child, index) => {
-      if (child.type === React.Fragment) {
-        composeDlComponent(child.props.children);
+    if (child?.type === Dt) {
+      wrappedChild = (
+        <StyledDtDiv key={key} dtTextAlign={dtTextAlign}>
+          {child}
+        </StyledDtDiv>
+      );
+    } else {
+      wrappedChild = (
+        <StyledDdDiv key={key} ddTextAlign={ddTextAlign}>
+          {child}
+        </StyledDdDiv>
+      );
+    }
+
+    return wrappedChild;
+  };
+
+  const composeContent = (childArray) => {
+    const contentArray = [];
+
+    childArray.forEach((child) => {
+      if (child?.type === React.Fragment) {
+        const fragmentList = child.props.children.map(
+          (fragmentChild, fragmentIndex) =>
+            wrapChild(fragmentChild, contentArray.length + fragmentIndex)
+        );
+
+        contentArray.push(fragmentList);
       } else {
-        if (child.type === Dt) {
-          dtLabel = child;
-        }
-        if (child.type === Dd) {
-          ddContent.push(child);
-        }
-
-        isLastChild = index === listChildren.length - 1;
-        nextItemIsNotDd =
-          !isLastChild &&
-          [Dt, React.Fragment].includes(listChildren[index + 1].type);
-
-        if (dtLabel && (nextItemIsNotDd || isLastChild)) {
-          key = `${key + 1}`;
-
-          dlComponent.push(
-            <React.Fragment key={child.props.key || key}>
-              <StyledDtDiv dtTextAlign={dtTextAlign}>{dtLabel}</StyledDtDiv>
-              <StyledDdDiv ddTextAlign={ddTextAlign}>{ddContent}</StyledDdDiv>
-            </React.Fragment>
-          );
-
-          ddContent = [];
-        }
+        contentArray.push(wrapChild(child, contentArray.length));
       }
     });
 
-    return dlComponent;
+    return contentArray;
   };
 
   return (
-    <StyledDl w={w} data-component="dl" {...props}>
-      {composeDlComponent(listChildren)}
+    <StyledDl w={w} data-component="dl" {...rest}>
+      {composeContent(listChildren)}
     </StyledDl>
   );
 };
 
 Dl.propTypes = {
   ...propTypes.space,
+  /** Child elements */
+  children: PropTypes.node.isRequired,
   /** This string will specify the text align styling of the `<dt></dt>`. */
   dtTextAlign: PropTypes.oneOf(["left", "center", "right"]),
   /** This string will specify the text align styling of the `<dd></dd>`. */
@@ -73,10 +71,5 @@ Dl.propTypes = {
       by the `StyledDdDiv`.
    */
   w: PropTypes.number,
-  /**
-   * @private
-   * @ignore
-   */
-  children: PropTypes.node.isRequired,
 };
 export default Dl;

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styledSystemPropTypes from "@styled-system/prop-types";
 
 import { assign } from "lodash";
-import DateInput from "../date";
+import DateInput from "../../../components/date";
 import { filterStyledSystemMarginProps } from "../../../style/utils";
 import tagComponent from "../../../utils/helpers/tags";
 import StyledDateRange from "./date-range.style";

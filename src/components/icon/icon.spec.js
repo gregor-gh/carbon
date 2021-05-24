@@ -148,11 +148,36 @@ describe("Icon component", () => {
 
       it("renders properly colored Icon when hovered", () => {
         const wrapper = mount(<Icon color={color} type="message" />);
+        expect(wrapper.find(StyledIcon)).not.toHaveStyleRule(
+          "color",
+          shade(0.2, toColor(baseTheme, color)),
+          { modifier: ":hover" }
+        );
+      });
+
+      it("takes precedence over iconColor and renders properly colored Icon with tooltip", () => {
+        const wrapper = shallow(
+          <Icon type="home" color={color} tooltipMessage="tooltip message" />
+        );
+
+        assertStyleMatch(
+          {
+            color: toColor(baseTheme, color),
+          },
+          wrapper.find(StyledIcon).dive().dive().dive()
+        );
+      });
+
+      it("renders properly colored Icon with tooltip when hovered", () => {
+        const wrapper = shallow(
+          <Icon type="home" color={color} tooltipMessage="tooltip message" />
+        );
+
         assertStyleMatch(
           {
             color: shade(0.2, toColor(baseTheme, color)),
           },
-          wrapper.find(StyledIcon),
+          wrapper.find(StyledIcon).dive().dive().dive(),
           { modifier: ":hover" }
         );
       });
@@ -170,11 +195,9 @@ describe("Icon component", () => {
 
       it("renders properly colored Icon when hovered", () => {
         const wrapper = mount(<Icon bg={color} type="message" />);
-        assertStyleMatch(
-          {
-            backgroundColor: shade(0.2, toColor(baseTheme, color)),
-          },
-          wrapper.find(StyledIcon),
+        expect(wrapper.find(StyledIcon)).not.toHaveStyleRule(
+          "background-color",
+          shade(0.2, toColor(baseTheme, color)),
           { modifier: ":hover" }
         );
       });
@@ -251,14 +274,6 @@ describe("Icon component", () => {
             },
             wrapper.toJSON()
           );
-
-          assertStyleMatch(
-            {
-              color: baseTheme.icon.defaultHover,
-            },
-            wrapper.toJSON(),
-            { modifier: ":hover" }
-          );
         });
       }
     );
@@ -287,14 +302,6 @@ describe("Icon component", () => {
             color: baseTheme.icon.onLightBackground,
           },
           wrapper.toJSON()
-        );
-
-        assertStyleMatch(
-          {
-            color: baseTheme.icon.onLightBackgroundHover,
-          },
-          wrapper.toJSON(),
-          { modifier: ":hover" }
         );
       });
 
@@ -325,14 +332,6 @@ describe("Icon component", () => {
             color: baseTheme.colors.primary,
           },
           wrapper.toJSON()
-        );
-
-        assertStyleMatch(
-          {
-            color: "#006800",
-          },
-          wrapper.toJSON(),
-          { modifier: ":hover" }
         );
       });
     });
@@ -367,26 +366,13 @@ describe("Icon component", () => {
       "when bgTheme is set to one of the statuses",
       (status) => {
         const wrapper = renderStyles({ bgTheme: status });
-        const hoverColors = {
-          info: "#005C9B",
-          error: "#9F2D3F",
-          success: "#008D00",
-          warning: "#BA5000",
-        };
+
         it(`renders proper background color for ${status}`, () => {
           assertStyleMatch(
             {
               backgroundColor: baseTheme.colors[status],
             },
             wrapper.toJSON()
-          );
-
-          assertStyleMatch(
-            {
-              backgroundColor: hoverColors[status],
-            },
-            wrapper.toJSON(),
-            { modifier: ":hover" }
           );
         });
       }
@@ -401,14 +387,6 @@ describe("Icon component", () => {
             backgroundColor: baseTheme.colors.primary,
           },
           wrapper.toJSON()
-        );
-
-        assertStyleMatch(
-          {
-            backgroundColor: "#006800",
-          },
-          wrapper.toJSON(),
-          { modifier: ":hover" }
         );
       });
     });

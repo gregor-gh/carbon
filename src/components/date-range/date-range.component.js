@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import styledSystemPropTypes from "@styled-system/prop-types";
 
 import { assign } from "lodash";
-import DateInput from "../date";
-import { filterStyledSystemMarginProps } from "../../../style/utils";
-import tagComponent from "../../../utils/helpers/tags";
+import DateInput from "../../__experimental__/components/date";
+import { filterStyledSystemMarginProps } from "../../style/utils";
+import tagComponent from "../../utils/helpers/tags/tags";
 import StyledDateRange from "./date-range.style";
-import DateHelper from "../../../utils/helpers/date";
+import DateHelper from "../../utils/helpers/date/date";
 
 const marginPropTypes = filterStyledSystemMarginProps(
   styledSystemPropTypes.space

@@ -3,6 +3,12 @@ import { space } from "styled-system";
 
 import baseTheme from "../../../style/themes/base";
 
+const verticalBorderSizes = {
+  small: "1px",
+  medium: "2px",
+  large: "4px",
+};
+
 const StyledFlatTableCell = styled.td`
   ${({
     align,
@@ -13,6 +19,7 @@ const StyledFlatTableCell = styled.td`
     colWidth,
     isTruncated,
     expandable,
+    verticalBorder,
   }) => css`
     background-color: #fff;
     border-width: 0;
@@ -70,6 +77,12 @@ const StyledFlatTableCell = styled.td`
     ${expandable &&
     css`
       white-space: nowrap;
+    `}
+
+    ${verticalBorder &&
+    css`
+      border-right: ${verticalBorderSizes[verticalBorder]} solid
+        ${theme.table.secondary};
     `}
   `}
 `;

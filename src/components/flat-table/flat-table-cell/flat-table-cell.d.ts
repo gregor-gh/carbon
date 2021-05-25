@@ -1,5 +1,6 @@
 import * as React from "react";
 import { SpaceProps } from "styled-system";
+import { TableBorderSize } from "..";
 import * as OptionsHelper from "../../../utils/helpers/options-helper";
 
 export interface FlatTableCellProps extends SpaceProps {
@@ -16,6 +17,8 @@ export interface FlatTableCellProps extends SpaceProps {
   truncate?: boolean;
   /** Title text to display if cell content truncates */
   title?: string;
+  /** Sets a custom vertical right border */
+  verticalBorder?: TableBorderSize;
 }
 
 declare function FlatTableCell(props: FlatTableCellProps): JSX.Element;
